@@ -1,0 +1,14 @@
+---
+web:
+  name: webserver
+  image: nginx
+  tty: True
+  working_dir: /var/lib/work
+  ports:
+    - "80"
+    - "443:8080"
+    - "2222:2222/udp"
+  environment:
+    - "HOME"
+    - "TESTVAR=test"
+
