@@ -34,6 +34,7 @@ func kubeSecurityContext(sc *config.ServiceConfig) (*api.SecurityContext, error)
 			Add:  stringsToCapability(sc.CapAdd),
 			Drop: stringsToCapability(sc.CapDrop),
 		},
+		Privileged: &sc.Privileged,
 	}
 	return securityContext, nil
 }

@@ -58,7 +58,6 @@ docker-compose parameters Not Yet Implemented:
  * network\_mode (v2)
  * networks (v2)
  * pid
- * privileged
  * read\_only
  * restart
  * security\_opt
