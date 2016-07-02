@@ -39,6 +39,7 @@ func CompToDeployment(proj *project.Project) ([]byte, error) {
 						Containers: []api.Container{
 							con,
 						},
+						Hostname: s.Hostname,
 					},
 				},
 			},

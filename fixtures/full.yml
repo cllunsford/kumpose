@@ -1,5 +1,6 @@
 ---
 web:
+  hostname: web01
   image: nginx
   tty: True
   working_dir: /var/lib/work
