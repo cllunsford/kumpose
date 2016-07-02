@@ -4,8 +4,6 @@
 
 Kumpose converts docker-compose.yml files into kubernetes configurations.  This is still a prototype project; don't point it at anything valuable.
 
-Inspired by https://github.com/kelseyhightower/compose2kube.
-
 # Usage
 
 ```
@@ -72,6 +70,10 @@ docker-compose parameters Not Yet Implemented:
 # Notes
 
 Currently importing k8s.io/kubernetes/pkg/api which is not designed for external consumption.  This increases the number of files imported and build times.  Will switch to versioned golang API once available (https://github.com/kubernetes/kubernetes/issues/5660).
+
+# Prior Art
+
+ * https://github.com/kelseyhightower/compose2kube.
 
 # License
 
