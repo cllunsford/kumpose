@@ -1,6 +1,5 @@
 ---
 web:
-  name: webserver
   image: nginx
   tty: True
   working_dir: /var/lib/work
