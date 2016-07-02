@@ -5,7 +5,6 @@ import (
 	"log"
 	"strings"
 
-	"github.com/docker/libcompose/config"
 	"github.com/docker/libcompose/project"
 	"k8s.io/kubernetes/pkg/api"
 	"k8s.io/kubernetes/pkg/api/unversioned"
@@ -99,27 +98,6 @@ func CompToKube(proj *project.Project) ([]byte, error) {
 	return kubeData, nil
 }
 
-func kubeContainer(name string, sc *config.ServiceConfig) (api.Container, error) {
-	container := api.Container{
-		Name:            name,
-		Image:           sc.Image,
-		Command:         sc.Entrypoint,
-		Args:            sc.Command,
-		ImagePullPolicy: api.PullIfNotPresent,
-		TTY:             sc.Tty,
-		WorkingDir:      sc.WorkingDir,
-	}
-	if ports, err := kubePorts(sc.Ports); err == nil {
-		container.Ports = ports
-	}
-	if env, err := kubeEnv(sc.Environment); err == nil {
-		container.Env = env
-	}
-
-	return container, nil
-}
-
-
 func kubeEnv(environment []string) ([]api.EnvVar, error) {
 	var kubeEnv []api.EnvVar
 
@@ -146,7 +124,7 @@ func Run(composeFile string, target string) ([]byte, error) {
 		&project.Context{
 			ProjectName:  "k",
 			ComposeFiles: []string{composeFile},
-		},nil,nil)
+		}, nil, nil)
 
 	if err := proj.Parse(); err != nil {
 		log.Fatal("Error parsing compose file")

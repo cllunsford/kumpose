@@ -1,5 +1,10 @@
 ---
 web:
+  cap_add:
+    - ALL
+  cap_drop:
+    - NET_ADMIN
+    - SYS_ADMIN
   hostname: web01
   image: nginx
   tty: True

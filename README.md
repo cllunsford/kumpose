@@ -30,7 +30,6 @@ For Kubernetes features that are not available in docker-compose, kumpose implem
 docker-compose parameters Not Yet Implemented:
 
  * aliases
- * cap\_add, cap\_drop
  * cgroup\_parent
  * container\_name
  * cpu\_quota
@@ -46,7 +45,6 @@ docker-compose parameters Not Yet Implemented:
  * expose
  * external\_links
  * extra\_hosts
- * hostname
  * ipc
  * labels
  * links
