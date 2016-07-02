@@ -3,7 +3,6 @@ package kumpose
 import (
 	"testing"
 
-	"github.com/docker/libcompose/config"
 	"github.com/stretchr/testify/assert"
 )
 
