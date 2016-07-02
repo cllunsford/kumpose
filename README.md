@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/cllunsford/kumpose.svg?branch=master)](https://travis-ci.org/cllunsford/kumpose)
 
-Kumpose converts docker-compose.yml files into kubernetes configurations.
+Kumpose converts docker-compose.yml files into kubernetes configurations.  This is still a prototype project; don't point it at anything valuable.
 
 # Usage
 
