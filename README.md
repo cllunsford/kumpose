@@ -4,6 +4,8 @@
 
 Kumpose converts docker-compose.yml files into kubernetes configurations.  This is still a prototype project; don't point it at anything valuable.
 
+Inspired by https://github.com/kelseyhightower/compose2kube.
+
 # Usage
 
 ```
