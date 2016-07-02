@@ -1,2 +1,4 @@
 kubeconfig
-vendor
+vendor/*
+!vendor/vendor.json
+!vendor/manifest
