@@ -3,6 +3,7 @@ package kumpose
 import (
 	"encoding/json"
 	"log"
+	"os"
 	"strings"
 
 	"github.com/docker/libcompose/project"
@@ -102,17 +103,19 @@ func kubeEnv(environment []string) ([]api.EnvVar, error) {
 	var kubeEnv []api.EnvVar
 
 	for _, e := range environment {
+		envVar := api.EnvVar{}
 		if strings.Contains(e, "=") {
 			parts := strings.Split(e, "=")
-			kubeEnv = append(kubeEnv, api.EnvVar{
-				Name:  parts[0],
-				Value: parts[1],
-			})
+			envVar.Name = parts[0]
+			envVar.Value = parts[1]
 		} else {
-			kubeEnv = append(kubeEnv, api.EnvVar{
-				Name: e,
-			})
+			envVar.Name = e
+			v, ok := os.LookupEnv(e)
+			if ok {
+				envVar.Value = v
+			}
 		}
+		kubeEnv = append(kubeEnv, envVar)
 	}
 
 	return kubeEnv, nil
