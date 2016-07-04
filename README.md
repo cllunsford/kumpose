@@ -39,7 +39,6 @@ docker-compose parameters Not Yet Implemented:
  * dns\_search
  * domainname
  * env\_file
- * environment
  * expose
  * external\_links
  * extra\_hosts
