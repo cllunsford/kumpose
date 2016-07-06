@@ -1,7 +1,6 @@
 language: go
-
 go:
-  - 1.6
+- 1.6
 
 cache:
   directories:
@@ -14,3 +13,17 @@ install:
 script:
   - govendor vet +local
   - govendor test +local
+
+before_deploy:
+  - GOOS=linux GOARCH=amd64 govendor build -o kumpose_linux_amd64
+
+deploy:
+  skip_cleanup: true
+  provider: releases
+  api-key:
+    secure: ZQiIi5A91HM5AD6o27biMMUIRtSFYaJjepuvtl/j5XVNWXHh2CtYLgTqsAppX3QTHcBAKBv+XzoEundMK2JRAmo0x/HDdCiHpQNWdnW8QvfCma14P0kUVOJDCrdtZuE0FFR5/WyEEIkrRtxDfhtC+3PbkWEVO3CNn1sMPJ7XH4zsF+ofubCrhGRfcrg/IWXiutf4JMvzUUwNknd/iVUuXqnRwAYebti3QvmZOp4s+xvzCbpdqbj0fjkgb9xqdVTUrh5hIMO+/PiUu8ygq2BespRfLGbjxaF6UMWOdq87DR+FLcL2cKN0MKFnLKkhoT978jIArFiB7kjc5lv/jkGQzkKGyjUyCiuYiNLPqWxxR4GD5pE0Km7hPtT2OXr95lqCUXC6M6ZbhMlEIi/xejvk9c7T0rRRSO1f0ejR+HekDOLcmaf5AVffkPGNz9My2EwjVtTS+Bhx/jtIXrxEEwFrfs1h7OTGz9oyIMSmcFNF9KwqsKB7WW0miza84MGg2oq/b5rQShCaUdYN/ZK2poJOqUafPtnfRyXN+0/ANDfywhAF6FU3iSawD/80+0MEvwp3fPRVp6xi/ACSzfDHhBJ37T3ZHRRohYfXdOMTlXkm1DXowIeVRr9Fy4qt0mwU/lY4wjqCgovV+jDZC+km81ltFuGLkBiJlVaeGB1+YU+/7cQ=
+  file:
+    - kumpose_linux_amd64
+  on:
+    tags: true
+    repo: cllunsford/kumpose
