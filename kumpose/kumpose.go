@@ -18,7 +18,10 @@ func CompToDeployment(proj *project.Project) ([]byte, error) {
 	for _, name := range proj.ServiceConfigs.Keys() {
 		s, _ := proj.ServiceConfigs.Get(name)
 
+		podSpec, _ := kubePodSpec(name, s)
+
 		con, _ := kubeContainer(name, s)
+		podSpec.Containers = []api.Container{con}
 
 		dep := &extensions.Deployment{
 			TypeMeta: unversioned.TypeMeta{
@@ -35,12 +38,7 @@ func CompToDeployment(proj *project.Project) ([]byte, error) {
 					ObjectMeta: api.ObjectMeta{
 						Labels: map[string]string{"service": name},
 					},
-					Spec: api.PodSpec{
-						Containers: []api.Container{
-							con,
-						},
-						Hostname: s.Hostname,
-					},
+					Spec: podSpec,
 				},
 			},
 		}

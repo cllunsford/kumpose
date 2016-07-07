@@ -17,4 +17,5 @@ web:
   privileged: True
   tty: True
   working_dir: /var/lib/work
+  restart: Always
 
