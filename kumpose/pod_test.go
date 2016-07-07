@@ -12,7 +12,6 @@ func TestKubePodSpec(t *testing.T) {
 	assert := assert.New(t)
 
 	sc := &config.ServiceConfig{
-		Image:   "nginx",
 		Restart: "always",
 	}
 
