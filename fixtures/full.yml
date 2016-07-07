@@ -18,4 +18,4 @@ web:
   tty: True
   working_dir: /var/lib/work
   restart: Always
-
+  net: host
