@@ -2,8 +2,10 @@ package kumpose
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"os"
+	"regexp"
 	"strings"
 
 	"github.com/docker/libcompose/project"
@@ -22,6 +24,13 @@ func CompToDeployment(proj *project.Project) ([]byte, error) {
 
 		con, _ := kubeContainer(name, s)
 		podSpec.Containers = []api.Container{con}
+
+		if len(s.Volumes) > 0 {
+			if volumes, mounts, err := kubeVolume(s.Volumes); err == nil {
+				podSpec.Volumes = volumes
+				podSpec.Containers[0].VolumeMounts = mounts
+			}
+		}
 
 		dep := &extensions.Deployment{
 			TypeMeta: unversioned.TypeMeta{
@@ -117,6 +126,47 @@ func kubeEnv(environment []string) ([]api.EnvVar, error) {
 	}
 
 	return kubeEnv, nil
+}
+
+func kubeVolume(volumes []string) ([]api.Volume, []api.VolumeMount, error) {
+	apiVolumes := []api.Volume{}
+	apiVolumeMounts := []api.VolumeMount{}
+
+	for _, v := range volumes {
+		vPaths := strings.Split(v, ":")
+
+		if len(vPaths) == 1 || vPaths[1] == "" {
+			return apiVolumes, apiVolumeMounts, fmt.Errorf("Shared container volumes are not supported: %s", v)
+		}
+
+		if matched, err := regexp.MatchString("^[~./]", vPaths[0]); !matched && err != nil {
+			return apiVolumes, apiVolumeMounts, fmt.Errorf("Unsupported volume: %s", v)
+		}
+
+		nameRe := regexp.MustCompile("[/.~ ]")
+		name := nameRe.ReplaceAllString(vPaths[0][1:], "-")
+
+		volumeMount := api.VolumeMount{
+			Name:      name,
+			MountPath: vPaths[1],
+		}
+
+		if len(vPaths) == 3 && vPaths[2] == "ro" {
+			volumeMount.ReadOnly = true
+		}
+
+		apiVolumes = append(apiVolumes, api.Volume{
+			Name: name,
+			VolumeSource: api.VolumeSource{
+				HostPath: &api.HostPathVolumeSource{
+					Path: vPaths[0],
+				},
+			},
+		})
+		apiVolumeMounts = append(apiVolumeMounts, volumeMount)
+	}
+
+	return apiVolumes, apiVolumeMounts, nil
 }
 
 func Run(composeFile string, target string) ([]byte, error) {
